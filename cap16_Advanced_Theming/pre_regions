@@ -1,0 +1,17 @@
+<?php
+
+function dgd7_preprocess_region(&$variables){
+	$region = $variables['region'];
+
+	if(in_array($region, array('sidebar_first','sidebar_second','content'))){
+		$variables['classes_array'][] = 'main'
+	}
+
+	if(in_array($region, array('footer','help','highlight'))){
+		$variables['classes_array'][] = 'clearfix'
+	}
+
+	if(in_array($region, array('header','footer','sidebar_first','sidebar_second'))){
+		$variables['classes_array'][] = 'outer'
+	}
+}

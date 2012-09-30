@@ -1,0 +1,10 @@
+Sobreescribiendo la pagina de "en construccion" y "en mantenimiento"
+
+Estas paginas son las que se muestran cuando el sitio esta bajo mantenimiento, o cuando no se puede acceder a la base de datos por razones tecnicas.
+
+Pasos.
+
+	1. Duplicamos page.tpl.php y lo pegamos dos veces en la carpeta templates de nuestro tema, con estos dos nombres.  maintenance-page.tpl.php y maintenance-page--offline.tpl.php
+	2. En Drupal, en Sites/DEfault/settings.php cambiamos la pagina a la que accedera en caso de estar en mantenimiento con esta linea 
+	$conf['maintenance_theme'] = 'themeName'; y cambiamos themename por nuestro nombre del tema.
+	3. Modificamos las dos paginas a nuestro antojo y vaciamos las caches.

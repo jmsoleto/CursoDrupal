@@ -1,0 +1,34 @@
+<?php
+function dgd7_page_alter(&$page){
+	/**
+	* Llamamos a nuestro nuevo elemento 'new stuff', de tipo container. los tipos disponibles estan en system_element_info
+	* y como container que es, usara la funcion theme_container() para crearse
+	*/
+	$page['highlighted']['new stuff'] = array(
+		'#type'=>'container',
+		'#attributes'=>array('class'=>'my_container')
+	);
+
+	/**
+	* Añadimos el subelemento heading, y le decimos que el type es html_tag. Esto hace que use la funcion theme_html_tag para crearse. El resto
+	* de parametros que añadimos son los que requiere la funcion theme_html_tag
+	*/
+	$page['highlighted']['new stuff']['heading'] = array(
+		'#type'=>'html_tag',
+		'#tag'=>'h2',
+		'#value'=>t('Heading'),
+		'#attributes'=>array('class'=>'my_container')
+	};
+
+	/*
+	* Por ultiumo añadimos un elemento list. Aqui no especificamos el tipo, pero si la propiedad #them para indicarle que la funcion para renderizar este elemeneto es theme_item_list. el resto de parametros, son los exxigidos por esa función.
+	*/
+	$page['highlighted']['new stuff']['list'] = array(
+		'#theme'=>'item_list',
+		'#items'=>array(
+			'Firs Item',
+			'Second Item',
+			'Third Item')
+	};
+
+}

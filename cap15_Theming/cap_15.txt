@@ -1,0 +1,248 @@
+1. TEMAS.
+
+La capa de temas de DRUYPAL es la responsable de como se ve el sitio web realizado en DRUPAL. El tema es el ultimo responsable de como se muestra una web.
+
+1.1. Los Temas basicos de DRUPAL (CORE THEMES)
+
+se encuentra en /themes y ahi se puede ver en terminos generales como funciona un tema. Sin embargo no son estos archivos los que debemos personalizar, porque estos temas estan pensandos para ser ejecutados tanto como usuario, como en el papel de administrador, y son muy complejos, y a la vez, poco flexibles.
+
+1.2. Theme engine.
+
+
+El directorio Themes tiene tambien una carpeta llamada Engines que contiene uno de los motores de temas llamado PHPTemplate. Es el motor en el que se basa el sistema de plantillas de DRUPAL
+
+Hay otros motores de temas como smarty, XTemplate y PHPTal
+
+1.3 Seleccion de tema. 
+
+Los temas se seleccionan en la pestaña apariencia del menu de administrador.
+
+1.4. Parametros de un tema.
+
+Los temas tienen una configuración basica, que define parte de la apariencia básica del sitio web, como el logotipo, nombre, slogan, si hay menu de navegación...
+
+Aparte, cada tema tiene unas opciones de configuración particulares que se pueden hayar en la opcion settings del tema.
+
+1.5. Instalar un tema.
+
+Los temas no deben ponerse en la carpeta Themes de drupal, porque esa esta reservada a los temas basicos y se consideraria modificar el core de DRUPAL. Ademas en caso de que actualicemos drupal, estos se sobreescribirian.
+
+Hay dos carpetas donde podemos almacenarlos.
+
+	sites/all/themes -> Cuando queramos que el tema este disponible en todos los sitios de nuestra instalacion (Aqui lo instala el instalador por degecto)
+	sites/sitename/themes -> Cuando queramos que el tema este disponible solo para un sitio en concreto.
+
+
+Tras instalarlo, debemos seleccionar el tema.
+
+1.6. El archivo .info
+
+el archivo nombretema.info contiene metadatos importantes sobre el tema, como el nombre del tema, la versión de dRUPAL para la que se ha hecho, las regiones, las hojas de estilo que usa... Es el primer archivo a crear cuando estemos creando un tema nuevo. (En este directorio hay un ejemplo de archivo info.)
+
+2. Regiones.
+
+La mayor parte del contenido de DRUPAL se muestra dentro de Regiones (REGIONS). LAs regiones habituales son HEADER, FOOTER, SIDEBARS y CONTENT y definene la estructura más basica de nuestro sitio. Dentro de estas regiones que definamos, es donde colocaremos nuestros bloques (BLOCKS)
+
+Los temas son los que determinan el numero de regiones, su disposición y su estilo. Podemos añadir una region en nuestro archivo .info con la siguiente linea.
+
+regions[footer_one]         = Footer Column One  --  donde footer_one seria el nombre de maquina y la parte de laq derecha el nombre que se muestra en pantalla.
+
+Tambien podemos crear regiones para contenido que no se muestra y que usaremos luego en combinacion con js.
+
+Sin embargo no basta con crear una region. Luego hay que hacer que se "imprima". Las regiones pagetop y pagebottom se imprimen en html.tpl.php mientras que el resto se imprimen en page.tpl.php (lo vemos mas adelante aunque en principio parece que basta con esta linea en la plantilla correspondiente)
+
+<?php print render($page['footer_one']); ?>
+
+
+2.1. Regiones por defecto.
+
+Drupal define nueve regiones por defecto si nosotros no le indicamos lo contrario (en cuanto metamos una se eliminan las opciones por defecto)
+
+Estas regiones son:
+	- PAGE TOP
+	- HEADER
+	- HIGHLIGHTED
+	- HELP
+	- CONTENT
+	- SIDEBARFIRST
+	- SIDEBARSECOND
+	- FOOTER
+	- PAGE BOTTOM
+
+Y este es el listado que las define.
+
+regions[header]         = Header
+regions[highlighted]    = Highlighted
+regions[help]           = Help; NO es obligatoria pero es donde se muestran los errores asi que...
+regions[content]        = Content ; Obligatoria
+regions[sidebar_first]  = First sidebar
+regions[sidebar_second] = Second sidebar
+regions[footer]         = Footer
+regions[page_top]       = Page top ;Obligatoria
+regions[page_bottom]    = Page bottom; Obligatoria
+
+Lo mejor al crear un tema es incluir este listado, comentar las regiones que no vayamos a usar y añadir las regiones que necesitemos.
+
+Alginos contendios basicos de la pagina no pueden ocultarse a traves de regiones (como el content (contenido, no region)) y aunque los ocultemos, se acabaran mostrando.
+
+pagetop y pagebottom son regiones que se ocultan a proposito puesto que son las que se usan para el tema de administración. Se pueden crear regiones ocultas conla siguiente linea
+
+regions_hidden[] = regionname
+
+2.2. Regiones creadas por un modulo.
+
+Algunos modulos crean regiones especificas en nuestros temas. Estas regiones tienen la particularidad de que no pueden ser controladas  a traves del sistema de bloques, y el tema no controla como se muestran
+
+2.3. Regiones VS Variables
+
+El sistema de regiones y bloques es optimo cuando los que van a modificar o alterar el sitio estan controlados y son pocos. Pero si es un grupo abierto, para evitar que lso bloques acaben en regiones poco aptas para ellos (un menu vertical en una cabecera por ejemplo), es mejor usar variables. ES decir, si queremos que nuestros elementos o bloques no se muevan por las regiones, las imprimos en el page.tpl.php de esta manera.
+
+      <?php if ($main_menu): ?>
+        <nav id="main-menu" role="navigation">
+          <?php
+          // This code snippet is hard to modify. We recommend turning off the
+          // "Main menu" on your sub-theme's settings form, deleting this PHP
+          // code block, and, instead, using the "Menu block" module.
+          // @see http://drupal.org/project/menu_block
+          print theme('links__system_main_menu', array(
+            'links' => $main_menu,
+            'attributes' => array(
+              'class' => array('links', 'inline', 'clearfix'),
+            ),
+            'heading' => array(
+              'text' => t('Main menu'),
+              'level' => 'h2',
+              'class' => array('element-invisible'),
+            ),
+          )); ?>
+        </nav>
+      <?php endif; ?>
+
+2.4 Creando regiones. 
+
+	El primer paso para crear una region es añadirla al .info de nuetro tema como hemos visto mas arriba.
+
+	Luego debemos imprimirlas en nuestro page.tpl.php (Debemos meterlo dentro de una carpeta llamada templates dentro de la carpeta de nuestro tema.)
+	Se imprimen con lineas como esta
+
+	<?php print render($page['footer_one']); ?>
+
+	Si queremos dar estilo a las regiones, el div que las representa tiene creada automaticamente un clase del tipo region-footer-one a la que podemos asignar reglas CSS.
+
+3. Template files.
+
+LAs template files consisten en etiquetas HTML e impresion de variables PHP, y se usan para imprimir en pantalla el resultado de las paginas web.
+En esta carpeta hay un ejemplo de una plantilla.
+
+Una pagina de drupal es basicamente un gran arbol de plantillas engarzadas con funciones propias del tema. Los nodos mas grandes yu basicos serian html.tpl.php y page.html.php y se iria ramificando hasta field.tpl.php, que seria la plantilla dedicada a renderizar campos.
+
+Las plantillas basicas de drupal son unas 40 pero principalmente se trabaja con las siguientes.
+
+	html.tpl.php --> modules /system --> Imprimer la estructura del documento HTML, incluyendo el contenido de la etiqueta head, los scripts, los estilos, abre y cierra la etiqueta body. No se suele sobreescribir
+
+	page.tpl.php --> Imprime las regiones de la pagina (menos pagetop y pagebotton que lo hace la anterior). Esta es la que mas se suele personlaizar.
+
+	region.tpl.php --> Imprime el html de cada region
+
+	block.tpl.php --> Imprime el html de cada bloque
+
+	node.tpl.php --> Imprime el html de cada nodo (unidad de contenido)
+
+	comment.tpl.php --> Imprime el html de los comentarios.
+
+	field.tpl.php --> imprime el html de los campos (field) Como hay muchos tipos de campos, este es el generico y mas abstracto y lo normal es hacer variaciones sobre el para el campo concreto que deseemos modificar. Esta template solo se usa si la sobreescribimos en nuestro tema.
+
+3.1 Sobreescribir templates
+
+Cuando las plantillas base no nos sirven, lo que se hace es sobreescribirlas. Esto es, coger una copia de la plantilla y pegarla en nuestra carpeta
+Para encontrar la plantilla que se esta usando podemos buscarla a traves de api.drupal.org
+
+3.2 Variables globales en las plantillas.
+
+Las plantillas tienen acceso a mas variables de las que imprimen. Estas son algunas.
+
+	$is_admin -> Boolean. Indica si el usuario es administrador
+	$logged_in -> Boolean. Indica si el usuario está logueado.
+	$is_front -> Boolean. Determina si la pagina actual es la front-page
+	$directory -> El directorio de la plantilla usada.
+	$user-> Objeto que contiene la información del usuario actual si esta logueado. No se debe imprimir nunca sino usar un rodeo del tipo theme('username',array('account'=>$user))
+	$language -> idioma usado en el sitio
+	$theme_hook_suggestions Un array que contiene otros posibles ganchos del tema que pueden ser usados como variables para nombrar templates
+	$title_prefix y $title_suffix. Arrays que contienen elementos que se imprimen antes y despues de la plantilla
+
+3.3 Atributos HTML
+
+Los atributos de cada etiqueta que termina representando la plantilla, se almacenan en arrays Cada uno de estos arrays tienen una vedrsion array y una version string. La version array (que tiene un sufijo _array en el nombre de la variable) es rellenada durante los procesos template_preprocess() y template_process_node() o template_process_block(), luego durante el proceso template_process() se crea la version texto.
+
+	$attributes Contiene los atributos que se definen en los diferentes modulos, a excepcion del atributo class
+	$classes Contiene las classses para el html y los div
+	$title_attributes. Contiene los atributos class para los titulos principales, de nodo y de teaser
+	$content_attributes. Contiene classes para en div contenedor del content Se puede ver su uso en node.tpl.php
+
+4 Funciones de Tema (Theme functions).
+
+Las funciones de tema son funciones cuyo cometido es crear las etiquetas html de manera que estas puedan ser modificadas por el tema. Es decir, es lo que crea el codigo html a partir de los resultados opbtenidos cuando pedimos la info a la base de datos.
+
+4.1 Como se crean funciones de tema.
+
+El core de DRUPAL y los modulos son los que generalmente definen funciones de tema, pero tambien pueden ser los propios temas los que las definan.
+
+Las implementaciones de hook_theme() son donde toda la informacion de las funciones de tema genericas se encuentra, incluidos los parametros que aceptan estas funciones.
+
+En esta carpeta tenemos un ejemplo de implementacion de hook_theme (hook.php)
+
+Una vez que hemos implementado un hooks theme, Drupal ya sabe que tiene theme hooks y buscara una funcion llamada theme_my_theme_hook que se encuentra en el archivo function.php, que debe ir dentro del archivo template.php
+
+Por ultimo, en nuestras templates, podemos hacer uso de esa funcion mediante la siguiente linea.
+
+<?php print theme('my_theme_hook',array('var1'=>'valor_var_1'));?>
+
+4.2. Sobreescribir funciones de tema
+
+Sobreescribir funciones de tema es similar a sobreescribir plantillas. Todas las funciones sobreescritas se alojan en template.php. Los pasos son los siguientes.
+	- Encontramos la funcion original de drupal (a traves de api.drupal.org)
+	- Copiamos y pegamos la funcion en template.php
+	- cambiamos el nombre de la funcion a  de theme_  a mitema_
+	- Guardamos, limpiamos cache y fin.
+
+4.3 Sugerencias de Theme Hooks.
+
+Cada template y cada funcion ofrece una serie de hooks a los que "engancharse", pero esto a veces no es suficiente. Por ejemplo, extender la plantilla de block, lo haria con todos los bloques que se impriman en la página, y a veces es necesario solo hacerlo en algunos en concreto
+
+Las sugerencias de hooks nos permiten concretar mas la plantilla a sobreescribir a traves de patrones de cadenas de texto. Estos patrones de texto dependen del objeto que queramos extender. Durante la etapa de preproceso, antes de que se renderice cada template, hay una variable llamada $theme_hook_suggestions que se rellena con sugerencias de hooks
+
+4.3.1. Sugerencias de templates
+
+Todas las templates del punto 3 se pueden extender. Para ´poder concretar mas, debemos cambiar el nombre cuando lo peguemos en nuestra carpeta template.
+
+Por ejemplo, si queremos extender la plantilla de BLOCK, drupal nos dice que las sugerencias (suggestions hooks) de nombres para block son las siguientes.
+'block__'.$variables['block']->region;
+'block__'.$variables['block']->module;
+'block__'.$variables['block']->module.$variables['block']->delta;
+
+Lo cual, sustituyendo las variables se traduce en.
+
+block--nombreregion.tpl.php
+block--nombremodulo.tpl.php
+block--nombremodulo--nombreblock.tpl.php
+
+Como vemos, drupal sustituye los _ por - 
+
+4.3.1.1. Sugerencias de templates para page y html
+
+Por sus caracteristicas especiales, page y html.tpl.php tienen diferentes normas a la hora de ofrecer sugerencias de hooksy lo hace a traves de  las variables url que tiene drupal
+
+por ejemplo www.misitio.com/node/1 usara page--node--1.tpl.php
+
+4.3.2. Sugerencias de funciones
+
+Las sugerencias de hooks tambien existen para las themes function. Esto permite usar las funciones de tema solo en determinados puntos (o en todo el sitio)
+
+Por ejemplo para sobreescribir la theme function theme_links() encargada de renderizar los enlaces, podemos usar lo siguiente.
+
+mitema_links() -> Sobreescribiria la funcion en todo el sitio
+mitema_links_node ->Sobreescribe la funcion solo dentro de los nodos
+mitema_links_comment -> Sobreescribe la funcion solo en los comentarios.
+
+4.3.3. Las sugerencias de theme hooks no es lo mismo que los propios theme hooks. Los ultimos son la implementacion por defecto de los primeros y estan registrados en una implementacion de hook_theme
+

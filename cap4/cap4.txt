@@ -1,0 +1,79 @@
+4. MODULOS
+
+Conceptos basicos.
+	- Mirar si hay un modulo que hace lo que nosotros queremos hacer, y comprobar si se puede personalizar los suficiente.
+	- Mientras menos modulos tengamos activados en nuestro sitio, mejor será su rendimiento.
+	- Cada modulo debe ser evaluado desde la perspectiva de nuestro sitio en particular.
+	- Los modulos deben ser filtrados por los siguientes criterios.
+		- Compatibilidad con tu versión de drupal.
+		- Que esten mantenidos de manera activa.
+		- Que esten completos y no en fase de test (a no ser que no quede alternativa)
+		- Si todo esto falla, pedirlo a la comunidad DRUPAL
+
+Que hacer si un modulo va mal.
+
+Si un modulo va mal, lo mejor es desinstalarlo
+
+4.1 MODULOS DEL CORE DE DRUPAL
+
+Estos son algunos de los modulos por defecto que incluye drupal
+	- BLOCK Permite crear y manejar bloques en el Tema
+	- COLOR Permite cambiar el color de los temas que soportan este modulo.
+	- COMMENTS Permite a los visitantes añadir comentarios.
+	- CONTEXTUAL LINKS Permite añadir enlaces de editar y borrar a los nodos de informacion
+	- DASHBOARD Activa un panel de control en nuestra pagina para servir de info al administrador.
+	- DATABASE LOGGIN Activa un log de los eventos que ocurren en la base de datos.
+	- FIELD SQL STORAGE Permite crear campos y adjuntarlos a content types, comments y otras entidades.
+	- HELP. Muestra la ayuda
+	- MENU. Muestra un menu de navegacion
+	- OVERLAY. Activa la vista de administrador en modo overlay
+	- PATH Permite crear URL que sean amigables para el usuario y para los motores de busqueda
+	- RDF Adjunta metadatos a nuestro contenido definiendo los elementos sobre los que escribimos
+	- SEARCH Permite a los usuarios buscar en el sitio
+	- SHORTCUTS Permite hacer atajos en el menu de administracion
+	- TAXONOMY Permite ategorizar el contenido usando un vocabulario.
+	- AGGEGATOR Permite crear contenido sindicado
+	- BLOG. Permite crear contenido en modo blog multiusuario
+	- BOOK. Permite crear contenido en forma de boceto
+	- CONTACT. Crea un formulario de contacto.
+	- CONTENT TRANSLATION. Permite traducir contenidoa diferentes lenguajes
+	- FORUM. Crea un foro de discusion.
+	- LOCALE. Permite traducir diferentes elementos de la interfaz de usuario
+	- OPEN ID. Permite registrarse en el sitio usando una openID
+	- PHP FILTER. Permite usar php cuando se crean contenidos o bloques
+	- TESTING Test automaticos en el codigo
+	- TRACKER. Almacena el seguimiento de usuarios y los cambios en el contenido.
+	- TRIGGER. Permite añadir acciones que se ejecutan cuando se acaban determinadas tareas (por ejemplo, que se envie un mail cada vez que alguien envia un post)
+
+4.2. Modulos añadidos.
+
+Los modulos añadidos deben ponerse en sites/all/modules/contrib. Al estar en el directorio all, estaran disponibles para todos los sitios. El meterlos en la carpeta contrib (hay que crearla), los separaremos de los modulos personalizados. (que iran en la carpeta custom que tambien podemos crear).
+
+Esta carpeta puede ser hecha backup y restaurada en cada actualizacion que hagamos de DRUPAL.
+
+4.3 Algunos modulos importantes.
+
+	4.3.1. VISTAS. Permite generar vistas (resultados de una consulta a la base de datos) (Ver cap 3)
+	4.3.2. CHAOS TOOLS. Modulo destinado al desarrollador que sirve de apoyo en la realización de algunas tareas
+	4.3.3. PATH AUTO. Cada pagina dentro de nuestro sitio tiene una url unica. Por defecto, drupal muestra esta url en el navegador (ej http://localhost/cursodrupal/web/?q=node/7). Este modulo nos permite convertir estas url es url amigables para el usuario y motores de búsqueda. Tambien podemos usar pathauto para establecer prefijos automaticos en base a nuestro contenido, o cualquier otro aspecto generado por el modulo Token
+	4.3.4 TOKEN Token permite crear contenedores para los usuarios, nodos y otras entidades. Estos contenedores son sustituidos por un token cuando sea necesario. Por ejemplo, si con pathauto creamos una url amigable que sea www.misitio.com/mitag/mi_titulo_del_post_que_es_largo. Token sustituiria el nombre del articulo por www.misitio.com/mitag/titulo_post_largo
+	4.3.5 ADDITIONAL FIELD TYPES PErmite que los campos sean del tipo imagen, video, audio....
+		4.3.5.1. REFERENCES. Permite que los campos sean del tipo reference (referencias a otros autores, taxonomias o contenidos)
+		4.3.5.2. FIELD GROUPS. Permite agrupar campos
+		4.3.5.3. LINKS. Permite crear campos de enlace
+		4.3.5.4. MEDIA Permite crear campos para diferentes tipos de medios (imagen, video, docs.)
+	4.3.6. WYSIWYG. Permite insertar contenidos con un editor WYSIWYG. Como alternativa se puede usar BUEEDITOR, que añade botones para insertar etiquetas html
+	4.3.7. WEBFORM. Sustituye al Contact del core. añdiendo mas campos, mas personalización
+	4.3.8. ANTISPAM o MOLLOM Filtros antispam. En ambos hay que registrarse.
+	4.3.9. CAPTCHA. Crea un captcha
+
+4.4. OTROS MODULOS
+
+	- ENVIROMENT INDICATOR - Muestra una franja con un color indicando el entorno (desarrollo , pre o pro) de desarrollo en el que estamos.
+	- SMART CROP. - Mejora el recortado de imagenes.
+	- CONTENT TYPE OVERVIEW. Añade multituyd de opciones de configuracon a los content types.
+	- MASQUERADE Permite cambiar entre usuarios sin desloguearte (util para el cambio admin/user)
+	- PANELS Permite crear esquemas de la pagina personalizados. Tambien crea una interfaz drag and drop
+	- CODE FILTER Permite añadir trozos de codigo al contenido. Incluye un filtro de entrada que tendremos que activar para uno o varios formatos
+	- COLORBOX Visulizacion de imagenes, videos... en una capa overlay
+

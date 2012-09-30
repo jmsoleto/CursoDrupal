@@ -1,0 +1,157 @@
+1. Construyendo un sitio en Drupal 7.
+
+El proceso de construccion de este sitio drupal va a constar de 5 pasos.
+	1. Planeamiento básico del sitio web
+	2. Instalación de Drupal 7
+	3. Configuración de drupal para que acepte comentarios de autores y de visitas.
+	4. Porporcionar contenidos estaticos y dinamicos a la pagina.
+	5. Dar a los gestiroes, editores y visitantes, diferentes niveles de acceso
+
+1.1. PLANIFICACION.
+
+Cuando comenzamos un sitio web, debemos contestar a la pregunta ¿Porqué?. Todas las respuestas de implementación pueden resolverse teniendo en cuenta el objetivo final de la web.
+
+Otra pregunta importante es ¿De donde van a proceder los recursos de nuestro sitio web
+
+1.2. ARQUITECTURA DE LA INFORMACIÓN
+
+Este paso consiste en esquematizar los contenidos del sitio a traves de un wireframe.
+
+Por un lado tenemos los Functional Requirements, que consiste en las cosas que se pueden hacer con nuestro sitio web, y como se relacionan estas funcionalidades entre si
+
+Con estos Functional Requirements, podemos pasar a esquematizar el sitio web a traves de un wireframe
+
+1.3. DISEÑO BASICO DEL SITIO
+
+Procedemos al diseño basico del sitio, teniendo en cuenta los dos puntos anteriores.
+
+2. INSTALACIÓN DE DRUPAL 7
+
+Primero descargamos DRupal 7 y lo estraemos
+
+Es una buena idea crear un directorio para el proyecto y poner a Drupal dentro deese directorio Tras eso, lo renombraremos a CMS o a WEB. Así podemo subir todo a git
+
+El siguiente paso consiste en ir al directorio raiz de Drupal y crear una copia de sites/default/default.settings.php y llamarla sites/default/settings.php, cambiando los premisos del nuevo archivo para que se pueda escribir. Tambien crearemos el directorio sites/default/files
+
+Tras eso accedemos a traves de nuestro navegador a nuestro servidor, a la carpeta donde hemos dejado drupal y comenzaremos su instalación. (Es importante haber creado antes una base de datos que sera la usada por drupal para almacenar la info.)
+
+Al terminar tendremos que dar unos datos basicos del sitio, asi como crear una cuenta de Administrador (maintenance site account). Este usuario tiene permiso para todo pero no lo deberiamos usar para nuestra cuenta personal. Con eso ya tenemos creado nuestra instalación de drupal.
+
+2.1. EL MENU DE ADMINISTRACIÓN DE DRUPAL.
+
+El menu superior de la pagina solo aparece en las cuentas con opciones de administracion, y nos da acceso a todos los apartados de administración de nuestro sitio. Desde esta barra podremos:
+	- Encontrar y añadir contenido.
+	- Modificar la estructura del sitio
+	- Modificar el tema del sitio
+	- Gestionar que personas se pueden loguear, y que pueden hacer
+	- Gestionar los modulos para añadir funcionalidad al sitio
+	- Modificar la configuración del sitio
+	- Ver estadísticas del sitio
+	- Obtener ayuda.
+
+Podemos modificar este menu con ayuda de modulos, como el Dashboard module o el shortcut module
+
+2.2. CAMBIANDO EL ESQUEMA DE COLOR DE NUESTRO TEMA.	
+
+Usando temas, podemos modificar rapidamente el aspecto de nuestro sitio. Podemos ver los temas disponibles en Appearance. Podemos añadir mas o crear los nuestros propios
+
+El tema por defecto (BARTIK) tiene la posibilidad de funcionar con el modulo Color, lo que nos posibilita cambiar los colores del tema sin tocar codigo (Accedemos a ellos a traves de la opcion de configuración del tema)
+
+3. REGISTRO Y LOGING MEDIANTE OPENID
+
+Activamos el modulo OpenID. No necesita configuración. Con OpenID la gente podra registrarse y loguearse usando otras cuentas que ya usen OpenID. OpenID es un estandar descentralizado de autenticación de usuarios, que permite a estos loguearse en diferentes sitios, con la misma identidad digital. Yahoo, google, aol... usan OpenID
+
+Cuando nuestro sitio este online, debemos activar un modulo antispam como un captcha, Mollom o Antispam y desactivar el autoregistro de usuario, de manera que las cuentas deban sera aceptadas por el administrador
+
+3.1 DESACTIVANDO MODULOS
+
+Es conveniente desactivar los modulos que no vayamos a usar, para mejorar la eficiencia y reducir la complejidad del sitio
+
+4. CREANDO TIPOS DE CONTENIDO (CONTENT TYPES) Y AÑADIENDO CONTENIDO
+
+Drupal se encarga de gestionar los contenidos de nuestro sitio. Cada contenido de nuestro sitio pertenecera a uno de los diferentes tipos de contenido. Podemos crear incluso nuestros tipos de contenidos personalizados. Eso nos permite saber como  y donde se mostrara cada tipo de contenido, si importarnos quien va a rellenar ese contenido. 
+
+4.1 CREAR UN CONTENT TYPE
+Todos los contenidos tienen, al menos, un titulo, una fecha de creación y un autor. El tipo de contenido define si ese contenido tiene cuerpo (texto), si permite comentarios, y otro tipo de opciones. Los tipos de contenido pueden tener tantos campos como deseemos de diferentes tipos (numerico, texto, archivo, imagen...). Todos los campos que configuremos para un tipo de contenido, estaran disponibles para todos los contenidos pertenecientes a ese tipo.
+
+Para este sitio, crearemos el tipo de contenido Sugerencia, para que los usuarios puedan dejar sugerencias. PAra eso creamos el content Type sugerencias y damos permiso a los usuarios registrados a crear contenidos de ese tipo. PAra permitir que esas sugerencias se puedan categorizar en varios tipos (Consejo, advertencia,anecdota, sugerencia de modulo), crearemos tambien un vocabulario de taxonomias y lo añadiremos a este content type
+
+Structure->content types-> Add Content Type
+
+Añadimos el nombre del content type y la descripcion (esta ayuda a los editores a conocer de que va el Content Type).
+
+En la parte inferior podemos modificar varias opciones de visualización y de publicación de este conten-type
+
+Una vez hecho esto ya tenemos disponible nuestro tipo de contenido, asi que pasamos a modificar los campos que contiene.
+
+Structure>[Sugerencias]>manage fields
+
+Crearemos un nuevo campo llamado explicacion y lo seteamos como long_text.
+
+En la siguiente pagina podremos gestionar los parametros de ese nuevo campo, tal como hacerlo requerido, numero de lineas, tipo de texto a introducir...
+
+Con eso finalizamos la inserción del nuevo campo.
+
+4.2. AÑADIR UNA PAGINA CON UNA URL LEGIBLE Y UN LINK DESDE EL MENU PRINCIPAL
+
+En ocasiones queremos crear una pagina que pueda ser accesible directamente y cuya url pueda ser memorizada por alguien si incluir ningun tipo de codigo dentro de ella.
+por ejemplo 
+
+www.misitio.com/sobremi
+
+Para eso añadiremos un nuevo contenido que en este caso sera del tipo Basic Page
+
+Metemos el contenido de la pagina y a continuación marcarmos "provide a menu link". Con eso obtendremos un enlace disponible para insertar en los menus
+
+Ademas, si Accedemos a URL PATH SETTINGS, podemos incluir el "alias", que sera el texto que aparecera en la url cuando queramos acceder a esta pagina ej ("sobremi")
+
+4.3 AÑADIR UN POST FIJO
+
+Ahora añadimos un contenido que sera la introducción del libro, que estara por encima de otros post posteriores. Para eso añadimos un content type de tipo page y le añadimos en contenido que deseemos. En las opciones de publicacion marcaremos Promote to front page y stycky to tal. Esto hará que se nos muestre en la pagina principal, y por delante que otros post aunque seas posteriores.
+
+4.4 BLOQUES
+
+Los bloques son piezas que pueden ser mostradas en las diferentes regiones de nuestro sitio. Pueden adoptar diferentes formas. Normalmente son listas o menus
+
+Drupal proporciona algunos bloques por defecto que se ven en Administration > Structure > Blocks, que muestra todos los bloques disponibles y las regiones donde pueden ser colocados. Si tenemos varios temas instalados, podemos configurar los bloques para cada tema
+
+Para nuetro sitio, crearemos un nuevo tipo de bloque llamado mision Administration > Structure > Blocks > add Block
+
+LE ponemos una descripcion (sin titulo) y especificamos donde se va a colocar dentro del tema. Ademas en este caso solo queremos que se muestre en la pagina principal, por lo que seleccionamos que se vea solo en paginas especificas y introducimos <front> en la casilla.
+
+Ya tenemos el bloque disponible en la region que hayamos seleccionado.
+
+4.5. TAXONOMIAS
+ 
+Drupal permite clasificar el contenido en base a taxonomias usando el modulo Taxonomy. Podemos definir nuestro propio vocabulario (grupo de terminos de taxonomias) y añadir terminos a cada vocabulario
+
+Los vocabularios pueden ser planos o esquematicos, de una seleccion o de varias, incluso pueden ser libres (se van introduciendo terminos conforme se introduce contenido)
+
+Cada vocabulario se adjunta a uno o varios content types
+
+Un uso habitual de las taxonomias es para listar contenidos con la misma taxonomia. Esto lo hace Drupal de manera automatica cuando accedemos a taxonomy/term/[id] donde id es la id de la taxonomia. Nos aparecerá entoces un listado con los contenidos pertenecientes a esa taxonomia.
+
+PAra crear un nuevo vocabulario Structure > Taxonomy > Add Vocabulary, y tras eso le añadimos los terminos que queramos
+
+Una vez creados los vocabularios que necesitemos, podemos añadir un campo en nnuestros Content Type para cada uno de los vocabularios.
+
+PAra añadir un campo de taxonomia: Structure > Content Types > Sugerencias > Add new Field. En field ponemos Term reference y en widget ponemos el metodo de seleccion de la taxonomia que deseemos. Tras lo cual ya podemos seleccionar el vocabulario a usar.
+
+5. PERMISOS
+
+Todos los visitantes de un sitio son considerados usuarios. A estos usuarios se les puede asignar permisos a traves de roles.
+
+La instalación basica de drupal incluye tres roles
+
+- Usuario anonimo: - Cualquier visitantede nuestro sitio web, esste logueado o no
+- Usuario autenticado: - Cualquier visitante que este logueado.
+- Usuario administrador: - Usuario que autmomaticamen tiene todos los permisos
+
+Lod dos primeros roles no se puden elminar, mientras que el tercero si, pero es util
+Podemos crear nuestros propos rol. A cada rol se le asigna una serie de permisos qie indican lo que el usuario puede o no puede hacer
+
+En nuestra web. primer añadimos un rol d autor. Administration>People>Permissions>Roles Tras eso, le decimos a Drupal que es lo que puede hacer ese Rol
+
+Ahora que tenemos roles, debemos dejar que los usuarios anonimos se puedan registrar. Esto se activa en admin/config/people/accounts. Hay tambien podremos setear los mensajes de bienvenida.
+
+Por ultimo establemcemos los permisos de cad rol. People > Permisions

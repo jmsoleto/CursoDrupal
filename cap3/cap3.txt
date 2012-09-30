@@ -1,0 +1,231 @@
+1. VISTAS
+
+El modulo vistas (VIEWS) te permite especificar criterios para, en función de ellos, mostrar determinado contenido, incluso combinando diferentes Content types. Tambien nos permite especificar el formato en el que se muestra la información. Conforme se actualizan los contenidos, se actualizan las vistas.
+
+1.1 El nombre VIEWS viene de la terminologia de bases de datos, donde una vista es una query compleja almacenada que se usa como tabla en una base de datos
+
+Las VIEWS de drupal funcíonan igual pero con una interfaz grafica que te permite creae esa query compleja.
+
+1.2 Ejemplo del uso de vistas.
+	- Mostrar los 5 ultimos post
+	- Mostrar los eventos proximos
+	- Mostrar todos los post de un usuario como un blog
+	- Mostrar todos los post de un mes
+
+La forma mas comun de mostrar las VIEWS es a traves de una BASIC PAGE o de un BLOCK. con las basic page, asignamos nuestra salida a una URL y con un block, nuestra VIEW puede ser colocalada en culquier region de la pagina.
+
+1.3 Instalación del modulo.
+
+bajamos el modulo de http://drupal.org/project/views y lo instalamos. Nos hara falta tambien drupal.org/project/ctools
+
+Ahora le concedemos permisos al administrador para que gestione las VIEWS.
+
+TIP Es importante en producción comprobar los permisos de cada role. para eso podemos abrir tres navegadores con diferentes roles y comprobar lo que cada uno puede hacer en la página.
+
+Con el modulo instalado podemos acceder al menu structure y tendremos acceso a VIEWS.
+
+Ahi tenemos disponible el listado de VIEWS disponibles. Cuando este listado sea extenso, se puede filtrar (desde esa pagina settings > show filters)
+
+En cada elemento del listado tenemos la siguiente información.
+	- Nombre de la VIEW (si pasamos por encima nos dice el machine name)
+	- Descripción
+	- MEtadata tags de la VIEW. Ayudan a categorizar las vistas
+	- PATH Solo se usa para las vistas tipo page. Sera la ruta limpia a la que acceder a esa view (no hay que poner el dominio)
+	- Enable o disabled. Activa las vistas (algunas por defecto estan desactivadas) La palabra que viene en ese menu indica lo que se quiere hacer con ella, de manera que si pone Enabled quiere decir que esta Disabled y que quieres activarla.
+	- Tipos de visualización. Cuando creamos una VIEW, podemos seleccionar en que formato queremos que se muestre (block, page, etc...). Una sola vista puede tener multiples visualizaciones. Por ejemplo, una view de los 5 ultimos comentarios puede tener una visualización del listado con los titulos de los comentarios, y otra con el teaser de esos comentarios
+	-storage format: puede tener 3 valores.
+		- "in code" -- El codigo de la VIEW esta almacenado en un archivo module. Cualquier modulo puede definir multiples VIEWS
+		- "Database overriding code" -- El codigo de la view ha sido definido por un modulo, pero se ha modificado y almacenado en la base de datos
+		- "in database" -- El codigo se almacena en la base de datos.
+
+	- Tipo de vista. Define el Type of content que queremos mostrar en nuestra vista
+
+1.4 Diseccionando una VIEW, la DEFAULT VIEW.
+
+Para comprender como funcionan las VIEWS, vamos a observar la DEFAULT VIEW (Front page)
+Vamos al listado de vistas, la localizamos y la activamos. Hecho esto ya podemos seleccionar "edit"
+
+Accedemos a la pagina de edicion de la view. Los primero que vemos es que podemos seleccionar diferentes opciones para los diferentes tipos de visualizacion (displays) En esta parte podemos crear mas visualizaciones, modificarlas, analizarlas, clonarlas, eliminarlas...
+
+El siguiente bloque nos permite configurar las caracteristicas de la VIEW:
+	- Cada una de las cabeceras (en negrita) controla un aspecto de la vista.
+		- DISPLAY NAME: El nombre de la visualización que estamos modificando.
+		- TITLE: El titulo aparecera en diferentes sitios, dependiendo del tipo de visualización
+ 		- FORMAT: El tipo de etiquetado HTML que queremos que use el resultado de nuestra VIEW. Podemos elegir una lista, una grid o una tabla o sin formato (cada resultado ira en una div). Ademas podemos modificar algunos parametros de formato (settings) como añadir una css a las filas, o alternar css en cada fila par/impar
+
+ 		En este punto tambien decidimos como se muestra en modo content y en modo teaser.
+
+ 		Si en el modo Content, seleccionamos Fields TEndremos mas opciones para mostrar los campos concretos y se nos activara la siguiente opcion.
+
+ 		- FIELDS. Si hemos elegido mostrar la vista como FIELDS, aqui podemos añadir los campos que queremos mostrar.
+ 		- FILTER CRITERIA. Como no necesitamos mostrar todo el contenido. Aqui podemos aplicar unas reglas para filtrar el contenido a mostrar
+ 		- SORT CRITERIA. Define el orden en el que vamos mostrar los resultados
+ 		- DISPLAY SETTINGS. 
+ 			- PATH: LA url donde la vista mostrara su contenido
+ 			- MENU: Crea un menu item que llevara directamente a esta vista.
+ 			- ACCESS: Limita el acceso a la vista por determinados usuarios.
+ 		- HEADER: Contenido mostrado antes de los resultados.
+ 		- FOOTER: Contenido mostrado despues de los resultados.
+ 		- PAGER: Pagina los resultados. Tambien podemos setear aqui el enlace "leer mas" 	
+ 		- CONTEXTUAL FILTERS: Si queremos crear paginas dinamicas que usen la URL para tomar decisiones sobre el contenido a mostrar, se pueden especificar aqui.
+ 		- RELATIONSHÎPS: Si queremos mostrar contenido no relacionado con la vista actual, pero que no forma parte de ella, se puede unir usando una RELATIONSHIP (Se verá mas adelante)
+ 		- NO RESULTS BEHAVIOR. Muestra la acciona  realizar en el caso de que no haya resultados en la vista.
+ 		- EXPOSED FORMS SI hemos puesto que se haya filtros disponibles en la vista para que los maneje el usuario, se controlan aqui.
+ 		- OTRAS CARACTERISTICAS:
+ 			- Machine name -- Nombre de la vista para DRUPAL
+ 			- Comment -- Comentarios sobre la vista.
+ 			- Status -- Estado de la VIEW en el presente DISPLAY MODE
+ 			- USe AJAX -- Muestra o cambia los resultados sin recargar la pagina.
+ 			- Hide attachsments in summary
+ 			- Use Grouping. Permite a la VIEW agrupar los resultados en base a un campo, antes de ser ordenados.Query settings -- Distinct . Elimina los duplicados de los resultados.
+ 			- Use slave server: opcion de rendimiento. Realiza la query a otro server.
+ 			- Caching. Cachea los resultados de la query. Si activamos esto, las actualizaciones no se veran automaticamente si no que tendra que esperar a que la cache refresque (el tiempo se setea aqui)
+ 			- Link display. Si usamos el link Leer mas, setea opciones de este.
+ 			- CSS Class. Clase css que se aplica al contenedor de la VIEW
+
+
+ 1.5 QUE TIPO DE CONTENIDO OBTENDREMOS
+
+ Para comprender el tipo de contenido que vamos a obtener nos fijaremos en los FILTER CRITERIA. Por ejemplo la FrontPAge tiene dos criterios
+ Content - Promoted to front pago y Content-Published. Eso quiere decir que incluira los contenidos promovidos y los publicados.
+
+ Los filtros pueden ser expuestos al usuario para que indique cuales quiere aplicar.
+
+ Los filtros para mostrar solo lo que este publicado son esenciales.
+
+ 1.6 COMBINACION DE CRITERIOS
+
+ En los filter criteria, en el deplegable, podrmos seleccionar operadores logicos para aplicar a los filtros
+
+ 1.7. FORMAT SETTINGS
+
+ Aqui definimos como se van mostrar nuestros resultados. Por ejemplo el Front Page muestra los resultados como content teasers sin meterlos en una lista (unformatted list). Otros tipos de formato son:
+ 	- GRID - Muestra todo el contenido en una caja y pregunta cuantas filas y columnas queremos
+ 	- HTML LIST Elegimos lista numerada o sin numerar
+ 	- JUMP MENU - Al clickar en la entrada, accederemos al contenido.
+ 	- TABLE - Pone los contenidos en una tabla
+ 	- Unformatted -  Un div sencillo con una css personalizable.
+
+ Si pulsamos sobre content, podremos alterar como se va a mostrar cada resultado. En el Front page tenmos content y fields, pero otros modulos nos ofreceran nuevos tipos de formatos (slideshow, puntos en un mapa, custom html...)
+
+ Si pulstamos sobre teaser, eso quiere decir que el content se mostrara en su forma teaser (la version corta del contenido)
+
+ 2. CREANDO UNA NUEVA VISTA
+
+Cuando se crea una nueva vista, es mejor seguir un patron definido
+	1. Va a ser un bloque, una pagina o otra cosa?
+	2. Cuando miro a los displays, que nombre debe aparecer para que sepa identificarlo
+	3. Que titulo deben ver los usuarios que vean esta vista.
+	4. Que tipo de contenido quiero mostrar.
+	5. Que parte de esos contenidos quiero mostrar
+	6. Como quiero mostrar esos contenidos
+	7. En que orden quiero mostrar esos contenidos.
+	8. Necesito que la url me modifique el listado de contenidos?
+
+
+
+
+	2.1 Nombre. 
+
+	Es importante pensar en las vistas que necesitaremos para nuestro sitio y establecer un patron para darles nombre, por ejemplo incluyendo la seccion donde iran o el content type.
+
+	Tambien debemos introducir una descripcion
+
+	2.2 Seleccionamos que queremos mostrar y de que tipo.
+
+	2.3. Decidimos si crear pagina, bloque o otra cosa. y sus parametros.
+
+	2.4. Le ponemos nombres a los displays para que nosotros sepamos para que se usa cada uno
+
+	2.5 Definimos el contenido que queremos mostrar. Si la vista va a mostrarse al publico, debemos añadir siempre el filtro de "publicadas"
+
+    2.6 Añadimos los filtros que deseemos hasta obtener el contenido deseado.
+
+    2.7 Definimos los elementos del contenido que queremos mostrar.
+
+    2.8 Definimos el orden de estos contenidos
+
+    2.9 Definimos el paginado de los contenidos.
+
+    2.10 Definimos si queremos entrada en el menu para estos contenidos.
+
+    2.11 Definimos las opciones avanzadas
+
+    Ej. Crear un bloque que muestre los cinco ultimos articulos de ese nodo.
+
+ 3. EXTENDER UNA VISTA
+
+ 	3.1. PAGINA DE NO RESULTADOS.
+
+	 Algunas veces creamos las vistas pensando en el contenido que vendra. A veces sabremos que tendremos que mostrar contenidos bajo determinados criterios, aunque esos contenidos aun no hayan sido creados. Si nuestra vista va a producción antes de que se creen los contenidos, tenemos que preveer que pasará en el caso de que un usuario acceda a esa vista.
+
+	 En la edicion de vista, bajo las opciones avanzadas pulsamos add no results behavior
+
+	 Si pulsamos global-text area, nos permitira introducir el html que se mostrara en caso de no encontrarse resultados.
+
+ 	3.2. ATTACHMENTS
+
+ 	El tipo de display Attachmets permite crear un display unido a otro (por ejemplo, en una misma pagina mostrar un articulo y un listado de otros articulos del mismo autor). Para ello crearemos un display tipo attachment y en la columna central en attach to, podremos elegir la vista al que queremos unirlo.
+
+ 
+ 4. VISTAS DE ADMINISTRADOR
+
+ 	A veces necesitaremos crear vistas para los diferentes administradores, de modo que estos puedan usar filtros que les muestren exactamente lo que están buscando. Esto se realiza a traves de los "exposed filters", que permite mostrar filtros para los usuarios
+
+ 	PAra ello, cuando creamos un filtro en una vista, podemos marcar la casiila de expose.
+
+ 	Por ultimo, debemos marcar la display tye como accesible a los administradores (o otro tipo de rol) a traves del enlace Role (Columna central)
+
+5. CONTEXTUAL FILTERS
+
+Los filtros contextuales son entradas de datos que generalmente provienen de la URL (A menudo llamados argumentos). Por ejemplo, a traves de la url, filtrar los articulos por autor automaticamente. (Mirar bien pagina 89)
+
+6. RELATIONSHIPS
+
+Las relaciones nos permiten mostrar contenido relacionado con el contenido que estamos mostrando, pero que no esta almacenado en la misma parte de la base de datos. Tienen que ser asociados con un contextual filter o con un field
+
+7. EXPORTANDO EL CODIGO.
+
+En ocasiones creamos las vistas en un entorno de desarrollo, con el fin de que despues sean exportadas al entorno de producción. Esto no siginifica que debamos replicar las vistas paso a paso, si no que lo que hacemos es exportar el codigo de la vista.
+
+PAra ello:
+
+	1. Creamos un modulo para mantener el codigo. creamos la carpeta , el .info y el .module de un nuevo modulo, y dentro de ella creamos la carpeta views
+	2. Creamos un archivo de texto con el nombre de la vista mas .inc ej articulos_de_jose.inc
+	3. Escribimos.
+	<?php
+	$views[$view->name] = $view;
+	?>
+	4. En drupal, en el listado de vbistas, seleccionamos "export" en la vista que queremos exportar
+	5. Obtenemos un codigo, este lo metemos al principio del archivo articulos_de_jose.inc (despues del primer tag php)
+	6. Ahora modificamos el archivo.module e insertamos esto
+	<?php
+
+	/**
+	*Implements hook_views_api()
+	**/
+
+			function misvistas_views_api(){
+				return array(
+					'api'=>'3.0'
+				);
+			}
+
+	/**
+	* Implements hook_views_default_views().
+	**/
+
+	function misvistas_views_default_views(){
+		$path='./'.drupal_get_path('module','misvistas').'/views/*.inc';
+		$views= array();
+			foreach(glob($path) as $views_filename){
+				require_once($views_filename);
+			}
+		return $views;
+	}
+	?>
+	7. Activamos el modulo en Drupal
+	8. Vaciamos la cache de las vistas.
+	
+
+

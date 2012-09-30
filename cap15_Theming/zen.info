@@ -1,0 +1,55 @@
+name        = Zen ; Nombre del tema, no debe coincidir con ningun modulo
+description = Zen sub-themes are the ultimate starting themes for Drupal 7. Read the <a href="http://drupal.org/node/873778">online docs</a> or the included README-FIRST.txt on how to create a theme with Zen.
+screenshot  = zen-internals/screenshot.png ;  Imagen del tema
+
+core        = 7.x ; Version  de drupal para la que esta hecho
+engine      = phptemplate ; engine del tema
+//basetheme = ; Tema sobre el que se basa este tema, 
+
+;Estas son las configuraciones basicas de un tema que sobreescribirian a las globales
+features[] = logo
+features[] = favicon
+
+; Aqui podemos definirt las hojas de estilo que queremos usar, pero hay otras maneras, esta debe usarse para las css que queramos cargar en todas las paginas.
+stylesheets[all][] = system.menus.css
+
+; Aqui podemos definir los archivos js que queramos incluir. Al igual que las css, solo debemos usar esta manera de meter los js, cuando queramos que estos se carguen en todas las paginas.
+scripts[] = ruta/al/archivo
+
+
+
+; Regiones por defecto del tema
+regions[header]         = Header
+regions[navigation]     = Navigation bar
+regions[highlighted]    = Highlighted
+regions[help]           = Help
+regions[content]        = Content
+regions[sidebar_first]  = First sidebar
+regions[sidebar_second] = Second sidebar
+regions[footer]         = Footer
+regions[bottom]         = Page bottom
+regions[page_top]       = Page top
+regions[page_bottom]    = Page bottom
+
+;Parametros adicionales especificos de este tema. 
+
+settings[zen_breadcrumb]           = yes
+settings[zen_breadcrumb_separator] = ' › '
+settings[zen_breadcrumb_home]      = 1
+settings[zen_breadcrumb_trailing]  = 1
+settings[zen_breadcrumb_title]     = 0
+settings[zen_layout]               = zen-responsive-sidebars
+settings[zen_skip_link_anchor]     = main-menu
+settings[zen_skip_link_text]       = Jump to navigation
+settings[zen_html5_respond_meta][] = respond
+settings[zen_html5_respond_meta][] = html5
+settings[zen_html5_respond_meta][] = meta
+settings[zen_rebuild_registry]     = 0
+settings[zen_wireframes]           = 0
+
+; Information added by drupal.org packaging script on 2012-05-18
+version = "7.x-5.1"
+core = "7.x"
+project = "zen"
+datestamp = "1337337097"
+

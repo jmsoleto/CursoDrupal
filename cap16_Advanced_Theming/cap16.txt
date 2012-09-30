@@ -1,0 +1,115 @@
+1. Que variables tengo disponibles en un tema.
+
+LAs variables que tenemos disponibles en una template, o funcion son diferentes dependiendo de la entitie en la que estemos trabajando.
+Estas variables no siempre estan disponibles.
+
+Para solucionar esto es recomendable instalarse el modulo Devel y la libreria Krumo (viene incluida)
+
+A partir de ese momento podemos usar funciones en nuestros templates como 
+
+<?php dpm($variables);?>
+
+Que imprimira en forma de arbol desplegable todos las variables disponibles
+
+2. Theme Developer
+
+Theme Developer es otro modulo que nos ayuda con la creacion de temas.
+
+Una vez instalado, cuando clickamos sobre un nodo obtenemos la siguiente info.
+	- La funcion padre y las templates que han creado el nodo
+	- los theme hooks sugestions para esa plantilla
+	- funciones preprocess y process
+	- listado de variables disponibles.
+
+3. Funciones PREPROCESS y PROCESS
+
+
+Cuando implementamos una funcion Pre o pro, le estamos diciendo a DRUPAL, que vemos a hacer cambios antes de que envie las variables a la plantilla. La diferencias entre ambos tipo de funciones son
+	-PREPROCESS Se ejecutan antes de que se renderice la plantilla.
+	-PROCESS Se ejecutan despues de las funciones PREPROCESS
+
+El flujo seria el siguiente (cogiendo como base por ejemplo la funcion template_preprocess)
+	1. se llama a la funcion template_preprocess
+	2. Todos los modulos y temas ejecutan si tienen su funcion template preprocess, modificando si es necesario las variables creadas por template_preproces (ej, template_preprocess_node)
+	3. Una vez que se completan todas las funciones preprocess, se ejecutan las process. Inicialmente hay dos funciones process
+		- template_process() -- imprime las class dentro del nodo que este tratando
+		- rdf_process()
+
+La ventaja de estas funciones PRE y PRO es que mantenemos la logica de datos fuera de las templates
+
+4. Implementar funciones PRE y PRO
+
+Las funciones PREy PRO se implementan creando una funcion con un nombre determinado
+
+function HOOK_preprocess_THEMEHOOK(&$variables){
+	
+}
+
+function HOOK_process_THEMEHOOK(&$variables){
+	
+}
+
+teniendo en cuenta lo siguiente.
+
+	HOOK es el gancho. Por defecto es "template", se refiere al nombre del modulo o del tema que lo implementa(mitema)
+	THEMEHOOK es el gancho definido en hook_theme(). Por defecto solo estan definidos en hook_theme los hooks basicos (node, block, region...)
+
+Las funciones pueden ser implementadas por temas y por modulos. Esto puede dar lugar a conflictos En ese caso, las implementaciones de modulos corren primero, mientras que las implementaciones de temas corren despues, y en el caso de que haya subtemas, estos corren al final
+
+Estas funciones se deben implementar en el template.php
+
+un ejemplo de funcion seria
+
+dgd7_preprocess_node(){
+
+}
+
+5. Ejemplos de acciones con funciones PRE y PRO
+
+5.1. Añadir class a los contenedores div
+
+Podemos añadir las clases que queramos a todas las regiones (ver listado pre_regions)
+
+6. USAR la API RENDER
+
+6.1. Que es un Render Array
+
+En las plantillas, algunas variables se imprimen tal cual, mientras que otras se imprimen mediante un comando render()
+los render array son arrays estructurados que contienen los datos anidados y otra información para convertirla en etiquetas HTML usando la API Render de drupal
+
+6.2. Identificar elementos de Render
+
+Los elementos de Render son siempre arrays y contiene propiedades que comienzan con #
+
+Algunas de estas propiedades son
+
+	- #theme Especifica el hook del tema, que puede ser una funcion o un template
+	- #theme_wrappers array que contiene los hooks que se usan para renderizar el contenedor de ese elemento
+	- #type El tipo de elemento que se va a renderizar
+	- #prefix y #suffix una cadena que se pone antes y despues del elemento renderizado
+	- #wheight. Indice usado para el orden de los elementos renderizados
+	- #attached. Especificado para cargar las css, librerias o js de elemento cuando es renderizado.
+
+6.3. Manipular la salida de elementos del render.
+
+Los render arrays se modifican a traves de los alter hooks, esto puede ser un poco lioso porque los render array son simimlares a los theme hooks, en cuanto que su ultimo proposito es generar html, y usan templates y theme functions para conseguirlo.
+
+Con los render arrays, la propiedad #theme, que nos indica la funcion o template que se usa para renderizar ese array, es solo una de las muchas propiedades, y puede ser alterada en cualquier momento.
+
+EN GENERAL, USAREMOS TEMPLATES Y THEME FUNCTIONS PARA MODIFICAR LAS TAGS DE HTML, Y ALTER HOOKS PARA MODIFICAR CONTENIDOS, ESTRUCTURA O LOCALIZACIÓN DE LOS ELEMENTOS ANTES DE QUE SEAN RENDERIZADOS.
+
+6.4. Ejemplo de uso de Alter hooks
+	6.4.1. Generar nuevo contenido al vuelo.
+
+	En el listado newcontent.php, se genera nuevo contenido usando el alter hook page. Esta funcion iria en nuestro template.
+
+6.5 Que alter hook puedo usar
+
+Hay bastantes render arrays en drupal. usar un alter hook indicado es dificil. En principio debemos evitar los atter hooks generales
+
+7 Reder, Show y Hide
+
+En drupal 7 tenemos la posibilidad de  renderizar elementos individuales, con estas tres nuevas funciones. Pueden ser usadas dentro de las theme functions, las templates, pre y pro. El unico elemento que necesitan para su funcionamiento es el item a renderizar
+	-hide() oculta un elemento renderizable
+	-show() muestra un elemento renderizable que ya estaba oculto (hide)
+	-render()Convierte un render array en un HTML

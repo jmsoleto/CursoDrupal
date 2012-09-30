@@ -1,0 +1,50 @@
+1. DRUSH Y GIT
+
+Dos herramientas esenciales son DRUSH y GIT
+
+Drush es el corazon de drupal. Te permite realizar todo tipo de tareas repetitivas en Drupal de una manera mucho mas rapida. Actualizar codigo, bajar un modulo...
+
+GIT Es una herramienta de control de versiones. Es la mejor alternativa para realizar bakcups de nuestro trabajo.
+
+2. Instalacion de DRUSH
+
+DRUSH es una herramienta de linea de comandos que nos acelear algunas acciones en Drupal.  Para instalar DRUSH debemos hacer lo siguiente:
+
+	- 1. Descargar DRUSH  http://drupal.org/project/drush
+	PAra windows http://www.drush.org/drush_windows_installer
+	Basta con instalarlo y acceder al sitio donde tenemos nuestro drupal a traves de la linea de comandos.
+
+	-2. En un servidor (TODO)
+
+
+3. Instalacion de GIT
+	- Descargamos git de http://git-scm.com/download/win
+	- La instalacion nos crea dos acceso, HIT BASH y GIT GUI, siendo la primera linea de comandos y la segunda una pequeña interfaz grafica
+	- desde la linea de comandos, podemos escribir "git" para que nos de un listado de los comandos disponibles
+	3.1 Primero debemos identificarnos en git (solo se hace la primera vez)
+		git config --global user.name "Tu Nombre"
+		git config --global user.email "tu mail"
+	3.2 Creamos un repositorio de nuestro proyecto, navegando hasta el directorio del proyecto y tecleando git init
+	3.3 A partir de este momento podemos almacenar nuestro codigo en el repositorio. Es necesario hacerlo a menudo. Tambien es necesario al cambiar algo medianamente importante en el proyecto
+	3.4 El primer paso es añadir nuestro codigo a stage. stage es una zona temporal donde se almacenan los cambios hasta que se suben. Para añadir nuestros cambios a stage lo hacemos mediante "git add ." desde la carpeta del proyecto. El punto final le indica que debe añadir todo
+	3.5 Cuando queramos subir codigo definitivo lo haremos con git commit -m "mensaje de subida"
+	3.6 En el caso de que queramos volver atras, tenemos varias opciones
+		- git reset --hard HEAD -- Deshara todos los cambios hasta el ultimo commit
+		- git checkout -- path/to/file.php -- Recupera un archivo del ultimo commit
+		- git revert HEAD -- Recupera el codigo del ultimo commit
+		- git revert HEAD^. -- Recupera el cofigo de versiones anteriores al ultimo commit
+
+	3.7 Otras opciones ultiles de git
+		git status Muestra lo que estamos a punto de hacer commit
+		git log muestra un listados de commits
+		git log --prety==oneline -n5 Muestra los commits mas ordenadamente y limita a 5 el numero de commits
+
+4. BACKUP DE LAS BASES DE DATOS
+
+Es importante hacer una copia de la base de datos de drupal. 
+
+el Drupal Git Backup Drush script. disponible en github.com/scor/dgb se usa para exportar tablas y poder mantenerlas en el control de versiones.
+
+Otra opcion es usar el modulo Backup And Migrate
+
+Otra es usando directamente DRUSH con drush sql-dump > /path/to/filename.sql
